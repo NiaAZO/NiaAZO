@@ -1,0 +1,141 @@
+---
+title: "Tarea Parte 2 Estefania Garcia"
+author: "Estefania Garcia"
+date: "8/3/2021"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#EJERCICIO DE EVALUACIÓN II
+## Análisis de series temporales
+
+
+```{r librerías necesarias, echo=FALSE, warning=FALSE, message= FALSE}
+
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(forecast)
+library(factoextra)
+library(pastecs)
+library(knitr)
+library(FactoMineR)
+library(corrplot)
+library(cluster)
+library(NbClust)
+library(heatmaply)
+```
+
+**###Introducción de la serie a analizar.** 
+
+Para la presente evaluación escogí la serie de "Estadística de Transporte de viajeros, total de viajeros transportados desde enero 2005 hasta diciembre 2020". Esta serie es publicada por el INE, tiene frecuencia mensual. Las cifras se encuentran en unidades: miles de viajeros. De acuerdo a la propia página del INE:
+
+"La Estadística de transporte de viajeros (TV) tiene como objetivo proporcionar información mensual sobre el número de viajeros transportados en transporte urbano (autobús y metro), interurbano (autobús, ferrocarril, avión y barco) y especial y discrecional por autobús.
+
+El transporte por autobús se investiga mediante una encuesta por muestreo. Para el transporte por ferrocarril el número de viajeros se calcula a partir de la información suministrada por los operadores ferroviarios (RENFE y otras empresas autonómicas). La información para el transporte aéreo es suministrada por Aviación Civil y para el transporte marítimo el número de pasajeros desembarcados se elabora a partir de la información de Puertos del Estado."
+
+
+```{r representación de la serie, message= FALSE, warning=FALSE}
+VIAJES <- read_excel("C:/Users/User/Documents/Estefania/Master/06. Minería de datos y Modelización Predictiva/Juana Maria Alonso/Tarea/Viajeros.xls")
+viajes<- ts(VIAJES[,-1], start=c(2005,1), frequency= 12)
+autoplot(viajes)+ggtitle("Número de viajeros mensuales")+ xlab("mes")+ ylab("Número de viajeros")
+
+```
+En el gráfico de la serie podemos observar que fluctua en torno a valores constantes de aprox 400.000 viajeros, con lo cual sospechamos que la serie es estacionaria. Es decir, tiene una media constante. No se observa una tendencia clara, a pesar de un minúsculo descenso y posterior ascenso a partir del año 2015. 
+
+Es evidente el comportamiento estacional de la serie, tiene tres períodos marcados de incremento al año (marzo, mayo y octubre)y un periodo de una aguda menor actividad en diciembre todos los años. Entonces el período es 12 meses. 
+
+
+**Representación gráfica y descomposición estacional (si tuviera comportamiento estacional).** 
+
+
+```{r descomposición, message=FALSE, warning=FALSE}
+#Creamos un objeto para guardar la serie.
+v_E_comp<-decompose(viajes, type=c("multiplicative"))
+#Representamos gráficamente
+autoplot(v_E_comp)
+#tabla
+knitr:: kable(v_E_comp$figure, digits=2, caption="Coeficientes de Estacionalidad")
+```
+**3.Para comprobar la eficacia de los métodos de predicción que vamos a hacer en los siguientes apartados reservamos los últimos datos observados (un periodo en las series estacionales o aproximadamente 10 observaciones) para comparar con las predicciones realizadas por cada uno de los métodos. Luego ajustamos los modelos sobre la serie sin esos últimos datos en los siguientes apartados**
+
+```{r nueva serie, message=FALSE, warning=FALSE}
+viajes_r<- window(viajes, end=c(2018,12))
+
+```
+
+
+**4. Encontrar el modelo de suavizado exponencial más adecuado. Para dicho modelo, representar gráficamente la serie observada y la suavizada con las predicciones para un periodo que se considere adecuado**
+
+Utilizaremos el metodo de alisado Holt-Winters ya que existe estacionalidad. El modelo será multiplicativo. 
+
+```{r suavizado hw, warning=FALSE, message=FALSE}
+fit1<-hw(viajes_r,h=24, seasonal = "multiplicative", level = c(80,95) )
+autoplot(fit1)
+print(fit1)
+fit1[["model"]]
+```
+```{r representación grafica  suavizado}
+autoplot(viajes)+
+  autolayer(fit1, series="Holt Winter", PI=FALSE)+
+  ggtitle("Forecast con el método de Holt")+xlab("Meses")+ylab("Viajeros")+
+  guides(colour= guide_legend(title="Forecast"))
+```
+
+
+**5. Representar la serie y los correlogramas. Decidir que modelo puede ser ajustado.Ajustar el modelo adecuado comprobando que sus residuales están incorrelados.(Sintaxis, tablas de los parámetros estimados y gráficos)**
+
+
+```{r correlogramas sin diferenciar}
+#Autocorrelación simple
+ggAcf(viajes_r, lag=48)
+#Autocorrelación parcial
+ggPacf(viajes_r, lag=48)
+```
+Como podemos ver en el autoccorrelograma simple, se observa un comportamiento repetitivo de las autocorrelaciones cada 12 meses. Esto es debido al efecto acumulativo de retardos anteriores. Precisamente eso es lo que evitamos con la autocorrelacion parcial donde se elimina los efectos de los retardos anteriores. En el gráfico PACF se observan sólo cinco picos que se encuentran fuera de los intervalos de confianza para ser considerados ruido blanco. 
+
+```{r correlogramas con diferenciación}
+#Autocorrelación simple
+ggAcf(diff(diff(viajes_r),12), lag=48)
+#Autocorrelación parcial
+ggPacf(diff(diff(viajes_r),12), lag=48)
+```
+
+```{r autoarima1}
+fitviajes1<-auto.arima(viajes_r, seasonal=TRUE)
+checkresiduals(fitviajes1)
+```
+
+
+Puesto que el contraste de Ljung-Box nos da un p-valor>0.05 aceptamos la hipótesis de que los residuos están incorrelados, además también lo podemos ver en su autocorrelograma, puesto que todos están dentro de las bandas de confianzas alrededor de cero calculadas con un 95% de probabilidad. 
+
+**6.Escribir la expresión algebraica del modelo ajustado con los parámetros estimados.**
+
+```{r coeficientes estimados}
+print(fitviajes1)
+```
+
+**7.Calcular las predicciones y los intervalos de confianza para las unidades de tiempo que se considere oportuno, dependiendo de la serie, siguientes al último valor observado. Representarlas gráficamente.**
+```{r forecast}
+autoplot(forecast(fitviajes1, h=24))
+knitr::kable(forecast(fitviajes1, h=24), digits=2, caption="Predicciones")
+```
+
+**8.Comparar las predicciones obtenidas con cada uno de los métodos con los valores observados que habíamos reservado antes. Conclusiones.**
+
+```{r plot predicción}
+autoplot(viajes)+
+  autolayer(forecast(fitviajes1, h=24), series="automatico", PI= FALSE)+
+  ggtitle("Predicciones")+ xlab("mes")+ylab("número de viajeros")+
+  guides(colour=guide_legend(title="Forecast"))
+  
+
+
+```
+
