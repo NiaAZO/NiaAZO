@@ -2,7 +2,7 @@
 <h3 align="center">A passionate data analyst from Venezuela living in Spain.</h3>
 
 
-(img align="right" alt="Coding" width="400" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fgithub.com%2Fdurgeshsamariya%2Fawesome-github-profile-readme-templates%2Fblob%2Fmaster%2Ftemplates%2FMahdiiye.md&psig=AOvVaw3-snKfqLl1aEvN9Bp_7StK&ust=1706789888697000&source=images&cd=vfe&opi=89978449&ved=2ahUKEwifiLn5zYeEAxWgmf0HHSt3D10QjRx6BAgAEBY ")
+(img align="right" alt="Coding" width="400" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fgithub.com%2Fdurgeshsamariya%2Fawesome-github-profile-readme-templates%2Fblob%2Fmaster%2Ftemplates%2FMahdiiye.md&psig=AOvVaw3-snKfqLl1aEvN9Bp_7StK&ust=1706789888697000&source=images&cd=vfe&opi=89978449&ved=2ahUKEwifiLn5zYeEAxWgmf0HHSt3D10QjRx6BAgAEBY")
 
 
 - 🌱 I’m currently learning **Data Engineering: Spark, GCP**
