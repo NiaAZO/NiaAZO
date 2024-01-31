@@ -1,7 +1,7 @@
 <h1 align="center">Hi 👋, I'm Estefania Garcia</h1>
 <h3 align="center">A passionate data analyst from Venezuela living in Spain.</h3>
 
-<(img align="right" alt="Coding" width="400" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDNxaTV6bGF1bXBvZWtlam5lNHJuaDR6d2UwMWZqb3ZoMWxwZWRxZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/765ccrAiB0g9z6EApL/giphy.gif “>
+<img align="right" alt="Coding" width="400" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDNxaTV6bGF1bXBvZWtlam5lNHJuaDR6d2UwMWZqb3ZoMWxwZWRxZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/765ccrAiB0g9z6EApL/giphy.gif“/>
 
 - 🌱 I’m currently learning **Data Engineering: Spark, GCP**
 
