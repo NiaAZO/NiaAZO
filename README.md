@@ -1,8 +1,6 @@
 <h1 align="center">Hi 👋, I'm Estefania Garcia</h1>
 <h3 align="center">A passionate data analyst from Venezuela living in Spain.</h3>
-
-
-<img align="right" alt="Coding" width="400" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fgithub.com%2Fdurgeshsamariya%2Fawesome-github-profile-readme-templates%2Fblob%2Fmaster%2Ftemplates%2FMahdiiye.md&psig=AOvVaw3-snKfqLl1aEvN9Bp_7StK&ust=1706789888697000&source=images&cd=vfe&opi=89978449&ved=2ahUKEwifiLn5zYeEAxWgmf0HHSt3D10QjRx6BAgAEBY">
+<iframe src="https://giphy.com/embed/765ccrAiB0g9z6EApL" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/765ccrAiB0g9z6EApL">via GIPHY</a></p>>
 
 
 - 🌱 I’m currently learning **Data Engineering: Spark, GCP**
