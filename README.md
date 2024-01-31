@@ -1,8 +1,6 @@
 <h1 align="center">Hi 👋, I'm Estefania Garcia</h1>
 <h3 align="center">A passionate data analyst from Venezuela living in Spain.</h3>
 
-<img align="right" alt="Coding" width="400" src="https://giphy.com/embed/765ccrAiB0g9z6EApL">
-
 - 🌱 I’m currently learning **Data Engineering: Spark, GCP**
 
 - 💬 Ask me about **Data Analysis: SQL, R, python**
